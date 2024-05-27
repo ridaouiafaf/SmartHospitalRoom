@@ -1,0 +1,54 @@
+<!-- index.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Index</title>
+    <!-- Styles -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .sidebar {
+            height: 100%;
+            width: 250px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: #f1f1f1;
+            padding-top: 20px;
+        }
+        .sidebar a {
+            padding: 10px;
+            display: block;
+            text-decoration: none;
+            color: #000;
+        }
+        .sidebar a:hover {
+            background-color: #ddd;
+        }
+        .content {
+            margin-left: 250px;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="sidebar">
+    <a href="#">Page du patient</a>
+    <a href="{% url 'chambre' %}">Chambre</a>
+</div>
+
+<div class="content">
+    <!-- Contenu principal de la page -->
+    <h1>Bienvenue sur la page d'index</h1>
+    <p>Choisissez une option dans la barre latérale.</p>
+</div>
+
+</body>
+</html>

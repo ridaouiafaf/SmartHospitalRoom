@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Informations sur les patients</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .sidebar {
+            height: 100%;
+            width: 250px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: #7b9aff;
+            padding-top: 20px;
+        }
+
+        .sidebar a {
+            padding: 10px;
+            display: block;
+            text-decoration: none;
+            color: #000;
+        }
+
+        .sidebar a:hover {
+            background-color: #ddd;
+        }
+
+        .content {
+            margin-left: 250px;
+            padding: 20px;
+        }
+
+        .modal {
+            display: none;
+            /* Cachée par défaut */
+            position: fixed;
+            z-index: 1;
+            /* Placez la fenêtre modale au-dessus de tout le reste */
+            left: 0;
+            top: 0;
+            width: 100%;
+            /* Largeur et hauteur pleine page */
+            height: 100%;
+            overflow: auto;
+            /* Permet de faire défiler la fenêtre modale si nécessaire */
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+        /* Style pour le contenu de la fenêtre modale */
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            /* Centrez verticalement */
+            padding: 20px;
+            border: 1px solid #888;
+            width: 50%;
+            /* Largeur de la fenêtre modale */
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .sidebar_elmt{
+            border-bottom:#000 solid 2px ;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="sidebar">
+            
+
+        <div class="sidebar_elmt">
+            <a href="#">Patient</a>
+        </div>
+        <div class="sidebar_elmt">
+            <a href="{% url 'chambre' %}">Chambre</a>
+        </div>
+        <div style="text-align: right; margin-top: 140%; ">
+            <form action="{% url 'logout' %}" method="post">
+                {% csrf_token %}
+                <button type="submit" style="background-color: #f44336; color: white; padding: 10px 20px; border: none;cursor: pointer; font-size: 16px;">Déconnexion</button>
+            </form>
+        </div>
+    </div>
+    
+
+    <div class="content">
+        <a href="#" id="ajouter-patient-btn"
+            style="background-color: green; color: white; padding: 10px; text-align: center; text-decoration: none;">Ajouter
+            patient</a>
+            <br><br><br>
+        <!-- Tableau des chambres existantes -->
+        <h1>Informations sur les patients</h1>
+        <div style="text-align: center; width: 100%;">
+            {% if message_erreur %}
+            <p style="color: red;">{{ message_erreur }}</p>
+            {% endif %}
+            {% if message_success %}
+            <p style="color: green;">{{ message_success }}</p>
+            {% endif %}
+
+            <table id="patients-table"
+                style="margin: 0 auto; border-collapse: collapse; width: 80%; border: 1px solid #ddd; border-radius: 5px;">
+                <thead>
+                    <tr style="background-color: #f2f2f2;">
+                        <th style="padding: 12px; border-right: 1px solid #ddd; text-align: left;">ID_P</th>
+                        <th style="padding: 12px; border-right: 1px solid #ddd; text-align: left;">Nom</th>
+                        <th style="padding: 12px; border-right: 1px solid #ddd; text-align: left;">Prénom</th>
+                        <th style="padding: 12px; border-right: 1px solid #ddd; text-align: left;">Date d'entrée</th>
+                        <th style="padding: 12px; border-right: 1px solid #ddd; text-align: left;">Date sortie</th>
+                        
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for patient in patients %}
+                    <tr style="border-bottom: 1px solid #ddd;">
+                        <td style="padding: 12px; border-right: 1px solid #ddd;">{{ patient.id }}</td>
+                        <td style="padding: 12px; border-right: 1px solid #ddd;">{{ patient.nom }}</td>
+                        <td style="padding: 12px; border-right: 1px solid #ddd;">{{ patient.prenom }}</td>
+                        <td style="padding: 12px; border-right: 1px solid #ddd;">{{ patient.date_entree }}</td>
+                        <td style="padding: 12px; border-right: 1px solid #ddd;">{{ patient.date_sortie }}</td>
+                        
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Fenêtre modale -->
+        <div id="ajouter-patient-modal" class="modal">
+            <div class="modal-content" style="background-color: #fefefe; padding: 20px; border-radius: 10px;">
+                <span class="close"
+                    style="color: #aaa; float: right; font-size: 28px; font-weight: bold;">&times;</span>
+                <h2 style="text-align: center; margin-bottom: 20px; color: #333;">Ajouter une patient</h2>
+                <form id="ajouter-patient-form" method="post" action="{% url 'ajouter_patient' %}"
+                    style="text-align: center; ">
+                    {% csrf_token %}
+                    <div style="margin-bottom: 20px;">
+                        <label for="id" style="font-weight: bold; color: #555;">ID :</label><br>
+                        <input type="text" id="id" name="id" required
+                            style="width: 70%; padding: 10px; margin-top: 5px; border: 1px solid #ccc; border-radius: 5px;">
+                    </div>                    
+                    <div style="margin-bottom: 20px;">
+                        <label for="nom" style="font-weight: bold; color: #555;">Nom :</label><br>
+                        <input type="text" id="nom" name="nom" required
+                            style="width: 70%; padding: 10px; margin-top: 5px; border: 1px solid #ccc; border-radius: 5px;">
+                    </div>
+                    <div style="margin-bottom: 20px;">
+                        <label for="prenom" style="font-weight: bold; color: #555;">Prénom :</label><br>
+                        <input type="text" id="prenom" name="prenom" required
+                            style="width: 70%; padding: 10px; margin-top: 5px; border: 1px solid #ccc; border-radius: 5px;">
+                    </div>
+                    
+                    <div style="margin-bottom: 20px;">
+                        <label for="date_entree" style="font-weight: bold; color: #555;">Date d'entrée:</label><br>
+                        <input type="date" id="date_entree" name="date_entree" required
+                            style="width: 70%; padding: 10px; margin-top: 5px; border: 1px solid #ccc; border-radius: 5px;">
+                    </div>
+                    <div style="margin-bottom: 20px;">
+                        <label for="date_sortie" style="font-weight: bold; color: #555;">Date de sortie:</label><br>
+                        <input type="date" id="date_sortie" name="date_sortie"
+                            style="width: 70%; padding: 10px; margin-top: 5px; border: 1px solid #ccc; border-radius: 5px;">
+                    </div>
+                    
+                    <button type="submit"
+                        style="background-color: #4CAF50; color: white; padding: 12px 20px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px;">Ajouter</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Récupérer la fenêtre modale
+        var modal = document.getElementById("ajouter-patient-modal");
+
+        // Récupérer le bouton qui ouvre la fenêtre modale
+        var btn = document.getElementById("ajouter-patient-btn");
+
+        // Récupérer l'élément de fermeture (X)
+        var span = document.getElementsByClassName("close")[0];
+
+        // Lorsque l'utilisateur clique sur le bouton, ouvrez la fenêtre modale
+        btn.onclick = function () {
+            modal.style.display = "block";
+        }
+
+        // Lorsque l'utilisateur clique sur (X), fermez la fenêtre modale
+        span.onclick = function () {
+            modal.style.display = "none";
+        }
+
+        // Lorsque l'utilisateur clique en dehors de la fenêtre modale, fermez-la
+        window.onclick = function (event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- Inclusion de jQuery -->
+    <script>
+        function syncPatients() {
+            $.ajax({
+                url: '/patients/json/',
+                method: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    $('#patients-table tbody').empty();
+                    data.forEach(function (patient) {
+                        $('#patients-table tbody').append('<tr style="border-bottom: 1px solid #ddd;"><td style="padding: 12px; border-right: 1px solid #ddd;">'  + patient.id + '</td><td>' + patient.nom + '</td><td>' + patient.prenom + '</td><td>' + patient.date_entree + '</td><td>' + patient.date_sortie + '</td></tr>');
+                    });
+                },
+                error: function (xhr, status, error) {
+                    console.error('Erreur lors de la récupération des données des patients:', error);
+                }
+            });
+        }
+        setInterval(syncPatients, 10000);
+    </script>
+</body>
+</html>

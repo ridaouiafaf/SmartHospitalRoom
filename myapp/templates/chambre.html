@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Informations sur les chambres</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .sidebar {
+            height: 100%;
+            width: 250px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: #7b9aff;
+            padding-top: 20px;
+        }
+
+        .sidebar a {
+            padding: 10px;
+            display: block;
+            text-decoration: none;
+            color: #000;
+        }
+
+        .sidebar a:hover {
+            background-color: #ddd;
+        }
+
+        .content {
+            margin-left: 250px;
+            padding: 20px;
+        }
+
+        .modal {
+            display: none;
+            /* Cachée par défaut */
+            position: fixed;
+            z-index: 1;
+            /* Placez la fenêtre modale au-dessus de tout le reste */
+            left: 0;
+            top: 0;
+            width: 100%;
+            /* Largeur et hauteur pleine page */
+            height: 100%;
+            overflow: auto;
+            /* Permet de faire défiler la fenêtre modale si nécessaire */
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+        /* Style pour le contenu de la fenêtre modale */
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            /* Centrez verticalement */
+            padding: 20px;
+            border: 1px solid #888;
+            width: 50%;
+            /* Largeur de la fenêtre modale */
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .sidebar_elmt{
+            border-bottom:#000 solid 2px ;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="sidebar">
+            <h3 style="text-align: center;">
+                {% if user_id == 1 %}
+                Bienvenue admin
+                {% elif user_id == 2 %}
+                Bienvenue Mme Ghita ZAZ
+                {% endif %}
+            </h3>
+
+        <div class="sidebar_elmt">
+            <a href="{% url 'patient' %}">Patient</a>
+        </div>
+        <div class="sidebar_elmt">
+            <a href="#">Chambre</a>
+        </div>
+        <div style="text-align: right; margin-top: 140%; ">
+            <form action="{% url 'logout' %}" method="post">
+                {% csrf_token %}
+                <button type="submit" style="background-color: #f44336; color: white; padding: 10px 20px; border: none;cursor: pointer; font-size: 16px;">Déconnexion</button>
+            </form>
+        </div>
+    </div>
+    
+
+    <div class="content">
+        <a href="#" id="ajouter-chambre-btn"
+            style="background-color: green; color: white; padding: 10px; text-align: center; text-decoration: none;">Ajouter
+            chambre</a>
+            <br><br><br>
+        <!-- Tableau des chambres existantes -->
+        <h1>Informations sur les chambres</h1>
+        <div style="text-align: center; width: 100%;">
+            {% if message_erreur %}
+            <p style="color: red;">{{ message_erreur }}</p>
+            {% endif %}
+            {% if message_success %}
+            <p style="color: green;">{{ message_success }}</p>
+            {% endif %}
+
+            <table id="chambres-table"
+                style="margin: 0 auto; border-collapse: collapse; width: 80%; border: 1px solid #ddd; border-radius: 5px;">
+                <thead>
+                    <tr style="background-color: #f2f2f2;">
+                        <th style="padding: 12px; border-right: 1px solid #ddd; text-align: left;">Numéro</th>
+                        <th style="padding: 12px; border-right: 1px solid #ddd; text-align: left;">Étage</th>
+                        <th style="padding: 12px; border-right: 1px solid #ddd; text-align: left;">Température</th>
+                        <th style="padding: 12px; border-right: 1px solid #ddd; text-align: left;">Humidité</th>
+                        <th style="padding: 12px; text-align: left;">Qualité de l'air</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for chambre in chambres %}
+                    <tr style="border-bottom: 1px solid #ddd;">
+                        <td style="padding: 12px; border-right: 1px solid #ddd;">{{ chambre.numero }}</td>
+                        <td style="padding: 12px; border-right: 1px solid #ddd;">{{ chambre.etage }}</td>
+                        <td style="padding: 12px; border-right: 1px solid #ddd;">{{ chambre.temperature }}</td>
+                        <td style="padding: 12px; border-right: 1px solid #ddd;">{{ chambre.humidite }}</td>
+                        <td style="padding: 12px;">{{ chambre.qualite_air }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Fenêtre modale -->
+        <div id="ajouter-chambre-modal" class="modal">
+            <div class="modal-content" style="background-color: #fefefe; padding: 20px; border-radius: 10px;">
+                <span class="close"
+                    style="color: #aaa; float: right; font-size: 28px; font-weight: bold;">&times;</span>
+                <h2 style="text-align: center; margin-bottom: 20px; color: #333;">Ajouter une chambre</h2>
+                <form id="ajouter-chambre-form" method="post" action="{% url 'ajouter_chambre' %}"
+                    style="text-align: center; ">
+                    {% csrf_token %}
+                    <div style="margin-bottom: 20px;">
+                        <label for="numero" style="font-weight: bold; color: #555;">Numéro:</label><br>
+                        <input type="number" id="numero" name="numero" required
+                            style="width: 70%; padding: 10px; margin-top: 5px; border: 1px solid #ccc; border-radius: 5px;">
+                    </div>
+                    <div style="margin-bottom: 20px;">
+                        <label for="etage" style="font-weight: bold; color: #555;">Étage:</label><br>
+                        <input type="number" id="etage" name="etage" required
+                            style="width: 70%; padding: 10px; margin-top: 5px; border: 1px solid #ccc; border-radius: 5px;">
+                    </div>
+                    <div style="margin-bottom: 20px;">
+                        <label for="temperature" style="font-weight: bold; color: #555;">Température:</label><br>
+                        <input type="number" step="0.1" id="temperature" name="temperature" required
+                            style="width: 70%; padding: 10px; margin-top: 5px; border: 1px solid #ccc; border-radius: 5px;">
+                    </div>
+                    <div style="margin-bottom: 20px;">
+                        <label for="humidite" style="font-weight: bold; color: #555;">Humidité:</label><br>
+                        <input type="number" step="0.1" id="humidite" name="humidite" required
+                            style="width: 70%; padding: 10px; margin-top: 5px; border: 1px solid #ccc; border-radius: 5px;">
+                    </div>
+                    <div style="margin-bottom: 20px;">
+                        <label for="qualite_air" style="font-weight: bold; color: #555;">Qualité de l'air:</label><br>
+                        <input type="number" step="0.1" id="qualite_air" name="qualite_air" required
+                            style="width: 70%; padding: 10px; margin-top: 5px; border: 1px solid #ccc; border-radius: 5px;">
+                    </div>
+                    <button type="submit"
+                        style="background-color: #4CAF50; color: white; padding: 12px 20px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px;">Ajouter</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Récupérer la fenêtre modale
+        var modal = document.getElementById("ajouter-chambre-modal");
+
+        // Récupérer le bouton qui ouvre la fenêtre modale
+        var btn = document.getElementById("ajouter-chambre-btn");
+
+        // Récupérer l'élément de fermeture (X)
+        var span = document.getElementsByClassName("close")[0];
+
+        // Lorsque l'utilisateur clique sur le bouton, ouvrez la fenêtre modale
+        btn.onclick = function () {
+            modal.style.display = "block";
+        }
+
+        // Lorsque l'utilisateur clique sur (X), fermez la fenêtre modale
+        span.onclick = function () {
+            modal.style.display = "none";
+        }
+
+        // Lorsque l'utilisateur clique en dehors de la fenêtre modale, fermez-la
+        window.onclick = function (event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- Inclusion de jQuery -->
+    <script>
+        function syncChambres() {
+            $.ajax({
+                url: '/chambres/json/',
+                method: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    $('#chambres-table tbody').empty();
+                    data.forEach(function (chambre) {
+                        $('#chambres-table tbody').append('<tr style="border-bottom: 1px solid #ddd;"><td style="padding: 12px; border-right: 1px solid #ddd;">' + chambre.numero + '</td><td>' + chambre.etage + '</td><td>' + chambre.temperature + '</td><td>' + chambre.humidite + '</td><td>' + chambre.qualite_air + '</td></tr>');
+                    });
+                },
+                error: function (xhr, status, error) {
+                    console.error('Erreur lors de la récupération des données des chambres:', error);
+                }
+            });
+        }
+        setInterval(syncChambres, 10000);
+    </script>
+</body>
+</html>

@@ -6,7 +6,6 @@ from .forms import ChambreForm
 from .forms import PatientForm
 from django.http import JsonResponse
 from django.contrib.sessions.models import Session
-
 def ajouter_chambre(request):
     if request.method == 'POST':
         form = ChambreForm(request.POST)

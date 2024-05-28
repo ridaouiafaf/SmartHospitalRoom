@@ -21,7 +21,7 @@ INSTALLED_APPS = [
     'myapp',
 ]
 
-LOGIN_REDIRECT_URL = '/index/'
+LOGIN_REDIRECT_URL = '/patient/'
 LOGOUT_REDIRECT_URL = '/'
 
 

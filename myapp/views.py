@@ -117,6 +117,3 @@ def personnel(request):
         personnels = Personnel.objects.all()
         return render(request, 'personnel.html', {'personnels': personnels})
 
-
-    chambres = Chambre.objects.all()
-    return render(request, 'patient.html', {'patients': patients, 'chambres':chambres , 'user_id': user_id})

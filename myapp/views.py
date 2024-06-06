@@ -7,19 +7,27 @@ from .forms import ChambreForm
 from .forms import PatientForm
 from django.http import JsonResponse
 from django.contrib.sessions.models import Session
+from datetime import datetime
+
 def ajouter_chambre(request):
+    user_id = request.session.get('user_id')
+    chambres = Chambre.objects.all()
     if request.method == 'POST':
         form = ChambreForm(request.POST)
         if form.is_valid():
             form.save()
             message_success = "L'ajout est effectué avec succès."
-            return render(request, 'chambre.html', {'message_success': message_success}) 
+            user_id = request.session.get('user_id')
+            chambres = Chambre.objects.all()
+            return render(request, 'chambre.html', {'message_success': message_success, 'chambres': chambres, 'user_id': user_id}) 
         else:
+            user_id = request.session.get('user_id')
+            chambres = Chambre.objects.all()
             message_erreur = "Un problème est survenu lors de l'ajout de la chambre."
-            return render(request, 'chambre.html', {'message_erreur': message_erreur})
+            return render(request, 'chambre.html', {'message_erreur': message_erreur, 'chambres': chambres, 'user_id': user_id})
     else:
         form = ChambreForm()
-    return render(request, 'chambre.html', {'form': form})
+    return render(request, 'chambre.html', {'form': form, 'chambres': chambres, 'user_id': user_id})
 
 def chambres_json(request):
     chambres = Chambre.objects.all()
@@ -48,20 +56,39 @@ def chambre(request):
     return render(request, 'chambre.html', {'chambres': chambres, 'user_id': user_id})
 
 
-
 def ajouter_patient(request):
+    user_id = request.session.get('user_id')
+    chambres = Chambre.objects.all()
+    patients = Patient.objects.all()
     if request.method == 'POST':
         form = PatientForm(request.POST)
+        chambre=request.POST.get('chambre')
+        date_entree = datetime.strptime(request.POST.get('date_entree'), '%Y-%m-%d').date()
+        date_sortie = datetime.strptime(request.POST.get('date_sortie'), '%Y-%m-%d').date()
+
         if form.is_valid():
+            nb_patient_chambre = Patient.objects.filter(chambre=chambre).count()
+            patients_dans_chambre = Patient.objects.filter(chambre=chambre)
+            if nb_patient_chambre>=3 :
+                for patient in patients_dans_chambre:
+                    if date_entree < patient.date_sortie and date_sortie > patient.date_entree:
+                        message_erreur = "Cette chambre n'est pas disponible pour les dates sélectionnées."
+                        return render(request, 'patient.html', {'message_erreur': message_erreur, 'chambres': chambres, 'patients': patients, 'user_id': user_id})
+                message_erreur = "Cette chambre est saturée."
+                return render(request, 'patient.html', {'message_erreur': message_erreur, 'chambres':chambres , 'patients': patients, 'user_id': user_id})  
+
             form.save()
             message_success = "L'ajout est effectué avec succès."
-            return render(request, 'patient.html', {'message_success': message_success}) 
+            patients = Patient.objects.all()
+            return render(request, 'patient.html', {'message_success': message_success, 'chambres':chambres , 'patients': patients, 'user_id': user_id}) 
         else:
+            patients = Patient.objects.all()
             message_erreur = "Un problème est survenu lors de l'ajout de la patient."
-            return render(request, 'patient.html', {'message_erreur': message_erreur})
+            return render(request, 'patient.html', {'message_erreur': message_erreur, 'chambres':chambres , 'patients': patients, 'user_id': user_id})
     else:
         form = PatientForm()
-    return render(request, 'patient.html', {'form': form})
+    return render(request, 'patient.html', {'form': form, 'chambres':chambres , 'patients': patients, 'user_id': user_id})
+
 
 def patients_json(request):
     patients = Patient.objects.all()
@@ -72,6 +99,7 @@ def patients_json(request):
 def patient(request):
     user_id = request.session.get('user_id')
     patients = Patient.objects.all()
+<<<<<<< HEAD
     return render(request, 'patient.html', {'patients': patients, 'user_id': user_id})
 
 
@@ -89,3 +117,7 @@ def personnel(request):
         personnels = Personnel.objects.all()
         return render(request, 'personnel.html', {'personnels': personnels})
 
+=======
+    chambres = Chambre.objects.all()
+    return render(request, 'patient.html', {'patients': patients, 'chambres':chambres , 'user_id': user_id})
+>>>>>>> 0449b61d3903fb57e05f749e9749e1ac173aa736

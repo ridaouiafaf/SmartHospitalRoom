@@ -128,7 +128,7 @@
                         <th style="padding: 12px; border-right: 1px solid #ddd; text-align: left;">Prénom</th>
                         <th style="padding: 12px; border-right: 1px solid #ddd; text-align: left;">Date d'entrée</th>
                         <th style="padding: 12px; border-right: 1px solid #ddd; text-align: left;">Date sortie</th>
-                        
+                        <th style="padding: 12px; border-right: 1px solid #ddd; text-align: left;">Chambre</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -139,7 +139,8 @@
                         <td style="padding: 12px; border-right: 1px solid #ddd;">{{ patient.prenom }}</td>
                         <td style="padding: 12px; border-right: 1px solid #ddd;">{{ patient.date_entree }}</td>
                         <td style="padding: 12px; border-right: 1px solid #ddd;">{{ patient.date_sortie }}</td>
-                        
+                        <td style="padding: 12px; border-right: 1px solid #ddd;">{{ patient.chambre.numero }}.{{ patient.chambre.etage }}
+                        </td>
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -154,12 +155,7 @@
                 <h2 style="text-align: center; margin-bottom: 20px; color: #333;">Ajouter une patient</h2>
                 <form id="ajouter-patient-form" method="post" action="{% url 'ajouter_patient' %}"
                     style="text-align: center; ">
-                    {% csrf_token %}
-                    <div style="margin-bottom: 20px;">
-                        <label for="id" style="font-weight: bold; color: #555;">ID :</label><br>
-                        <input type="text" id="id" name="id" required
-                            style="width: 70%; padding: 10px; margin-top: 5px; border: 1px solid #ccc; border-radius: 5px;">
-                    </div>                    
+                    {% csrf_token %}                  
                     <div style="margin-bottom: 20px;">
                         <label for="nom" style="font-weight: bold; color: #555;">Nom :</label><br>
                         <input type="text" id="nom" name="nom" required
@@ -181,7 +177,13 @@
                         <input type="date" id="date_sortie" name="date_sortie"
                             style="width: 70%; padding: 10px; margin-top: 5px; border: 1px solid #ccc; border-radius: 5px;">
                     </div>
-                    
+                    <div style="margin-bottom: 20px;">
+                        <label for="prenom" style="font-weight: bold; color: #555;">Chambre :</label><br>
+                        <select name="chambre" id="chambre">
+                            {% for chambre in chambres %}
+                                <option value="{{ chambre.id }}">{{ chambre.numero }}.{{ chambre.numero }}</option>
+                            {% endfor %}
+                        </select>                   </div>
                     <button type="submit"
                         style="background-color: #4CAF50; color: white; padding: 12px 20px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px;">Ajouter</button>
                 </form>

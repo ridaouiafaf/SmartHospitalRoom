@@ -87,13 +87,14 @@
 <body>
 
     <div class="sidebar">
-            
-
         <div class="sidebar_elmt">
             <a href="#">Patient</a>
         </div>
         <div class="sidebar_elmt">
             <a href="{% url 'chambre' %}">Chambre</a>
+        </div>
+        <div class="sidebar_elmt">
+            <a href="{% url 'personnel' %}">personnel</a>
         </div>
         <div style="text-align: right; margin-top: 140%; ">
             <form action="{% url 'logout' %}" method="post">

@@ -102,6 +102,9 @@
         <div class="sidebar_elmt">
             <a href="#">Chambre</a>
         </div>
+        <div class="sidebar_elmt">
+            <a href="{% url 'personnel' %}">personnel</a>
+        </div>
         <div style="text-align: right; margin-top: 140%; ">
             <form action="{% url 'logout' %}" method="post">
                 {% csrf_token %}

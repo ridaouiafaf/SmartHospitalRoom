@@ -1,3 +1,4 @@
+from time import timezone
 from django.shortcuts import render, redirect
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib import messages
@@ -72,3 +73,19 @@ def patient(request):
     user_id = request.session.get('user_id')
     patients = Patient.objects.all()
     return render(request, 'patient.html', {'patients': patients, 'user_id': user_id})
+
+
+from django.shortcuts import render
+from .models import Personnel
+
+def personnel(request):
+    if request.method == 'POST':
+        personnel_id = request.POST.get('personnel_id')
+        personnel = Personnel.objects.get(pk=personnel_id)
+        personnel.date_pointage = timezone.now()
+        personnel.save()
+        return redirect('personnel')
+    else:
+        personnels = Personnel.objects.all()
+        return render(request, 'personnel.html', {'personnels': personnels})
+

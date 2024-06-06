@@ -10,11 +10,11 @@ class ChambreForm(forms.ModelForm):
 class PatientForm(forms.ModelForm):
     class Meta:
         model = Patient
-        fields = ['id', 'nom', 'prenom', 'date_entree', 'date_sortie']
+        fields = ['id', 'nom', 'prenom', 'date_entree', 'date_sortie','chambre']
 class PersonnelForm(forms.ModelForm):
     class Meta:
         model = Personnel
         fields = ['nom', 'prenom', 'est_medecin', 'date_pointage']  
 
-        fields = ['id', 'nom', 'prenom', 'date_entree', 'date_sortie', 'chambre']
+        
 

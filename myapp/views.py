@@ -99,7 +99,7 @@ def patients_json(request):
 def patient(request):
     user_id = request.session.get('user_id')
     patients = Patient.objects.all()
-<<<<<<< HEAD
+
     return render(request, 'patient.html', {'patients': patients, 'user_id': user_id})
 
 
@@ -117,7 +117,6 @@ def personnel(request):
         personnels = Personnel.objects.all()
         return render(request, 'personnel.html', {'personnels': personnels})
 
-=======
+
     chambres = Chambre.objects.all()
     return render(request, 'patient.html', {'patients': patients, 'chambres':chambres , 'user_id': user_id})
->>>>>>> 0449b61d3903fb57e05f749e9749e1ac173aa736

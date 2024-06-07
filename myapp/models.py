@@ -30,12 +30,20 @@ class Patient(models.Model):
         return f"Patient {self.nom} {self.prenom}"
     
 class Personnel(models.Model):
+    id_personne = models.IntegerField(primary_key=True)
     nom = models.CharField(max_length=100)
     prenom = models.CharField(max_length=100)
     est_medecin = models.BooleanField(default=False)
-    fonctionnalite = models.CharField(max_length=100)  # Ajout du champ fonctionnalité
-    date_pointage = models.DateTimeField(null=True, blank=True)  # Nouveau champ
+    fonctionnalite = models.CharField(max_length=100) 
 
     def __str__(self):
         return f"{self.nom} {self.prenom}"
     
+class Pointage(models.Model):
+    id = models.AutoField(primary_key=True)
+    date_pointage = models.DateTimeField(null=True, blank=True)
+    personnel = models.ForeignKey(Personnel, on_delete=models.CASCADE)
+
+
+
+

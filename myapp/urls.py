@@ -10,7 +10,7 @@ urlpatterns = [
     path('logout/', LogoutView.as_view(), name='logout'),
     path('patient/', patient, name='patient'),
     path('ajouter/', ajouter_patient, name='ajouter_patient'),
-    path('', personnel, name='personnel'),
     path('personnel/', personnel, name='personnel'),
+    path('ajouter_personnel/', ajouter_personnel, name='add_personnel'),
     
 ]

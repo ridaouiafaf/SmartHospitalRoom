@@ -4,3 +4,4 @@ from .models import *
 admin.site.register(Chambre)
 admin.site.register(Personnel)
 admin.site.register(Patient)
+admin.site.register(Pointage)

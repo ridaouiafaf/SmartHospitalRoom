@@ -219,25 +219,6 @@
             }
         }
     </script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- Inclusion de jQuery -->
-    <script>
-        function syncPatients() {
-            $.ajax({
-                url: '/patients/json/',
-                method: 'GET',
-                dataType: 'json',
-                success: function (data) {
-                    $('#patients-table tbody').empty();
-                    data.forEach(function (patient) {
-                        $('#patients-table tbody').append('<tr style="border-bottom: 1px solid #ddd;"><td style="padding: 12px; border-right: 1px solid #ddd;">'  + patient.id + '</td><td>' + patient.nom + '</td><td>' + patient.prenom + '</td><td>' + patient.date_entree + '</td><td>' + patient.date_sortie + '</td></tr>');
-                    });
-                },
-                error: function (xhr, status, error) {
-                    console.error('Erreur lors de la récupération des données des patients:', error);
-                }
-            });
-        }
-        setInterval(syncPatients, 10000);
-    </script>
+
 </body>
 </html>

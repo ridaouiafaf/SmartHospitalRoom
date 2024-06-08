@@ -63,6 +63,7 @@ def ajouter_patient(request):
     if request.method == 'POST':
         form = PatientForm(request.POST)
         chambre=request.POST.get('chambre')
+        print(chambre)
         date_entree = datetime.strptime(request.POST.get('date_entree'), '%Y-%m-%d').date()
         date_sortie = datetime.strptime(request.POST.get('date_sortie'), '%Y-%m-%d').date()
 
@@ -99,18 +100,29 @@ def patients_json(request):
 def patient(request):
     user_id = request.session.get('user_id')
     patients = Patient.objects.all()
+    chambres = Chambre.objects.all()
+    return render(request, 'patient.html', {'patients': patients, 'chambres':chambres , 'user_id': user_id})
 
-    return render(request, 'patient.html', {'patients': patients, 'user_id': user_id})
-
-
-from django.shortcuts import render
-from .models import Personnel
 
 def personnel(request):
     if request.method == 'POST':
         personnel_id = request.POST.get('personnel_id')
         personnel = Personnel.objects.get(pk=personnel_id)
         personnel.date_pointage = timezone.now()
+        personnel.save()
+        return redirect('personnel')
+    else:
+        personnels = Personnel.objects.all()
+        return render(request, 'personnel.html', {'personnels': personnels})
+    
+
+def ajouter_personnel(request):
+    if request.method == 'POST':
+        nom = request.POST.get('nom')
+        prenom = request.POST.get('prenom')
+        est_medecin = 'est_medecin' in request.POST
+        fonctionnalite = request.POST.get('fonctionnalite')
+        personnel = Personnel(nom=nom, prenom=prenom, est_medecin=est_medecin, fonctionnalite=fonctionnalite)
         personnel.save()
         return redirect('personnel')
     else:

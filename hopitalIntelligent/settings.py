@@ -1,18 +1,18 @@
 # settings.py
 
+import os
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = 'django-insecure-zc1pfm^*x6-@en*+w(n4_7ww69c8hx2qy^7r2)qx4f%vuwr-@g'
 
-DEBUG = True
 
-ALLOWED_HOSTS = [
-    '192.168.1.164', #pour la liaison
-    'localhost',
-    '127.0.0.1'
-]
+
+DEBUG = True
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'django.contrib.admin',

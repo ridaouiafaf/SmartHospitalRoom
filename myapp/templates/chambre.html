@@ -5,6 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Informations sur les chambres</title>
+    <!-- Font Awesome Cdn Link -->
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+
+ {% load static %}
+ <link rel="stylesheet" href="{% static 'chambre.css' %}">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -86,35 +91,52 @@
 
 <body>
 
-    <div class="sidebar">
-            <h3 style="text-align: center;">
-                {% if user_id == 1 %}
-                Bienvenue admin
-                {% elif user_id == 2 %}
-                Bienvenue Mme Ghita ZAZ
-                {% endif %}
-            </h3>
+    <div class="container">
 
-        <div class="sidebar_elmt">
-            <a href="{% url 'patient' %}">Patient</a>
+    <nav>
+        <div class="navbar">
+          <div class="logo">
+              <img src="{% static 'images/logo2.png' %}" alt="Description de l'image">
+          </div>
+          <ul>        
             
+            <li><a href="{% url 'patient' %}">
+              <i class="fas fa-hospital-user"></i>
+              <span class="nav-item" >Patient</span>
+            </a>
+            </li>
+            <li><a href="#">
+              <i class="fas fa-bed"></i>
+              <span class="nav-item">Chambres</span>
+            </a>
+            </li>
+            <li><a href="{% url 'personnel' %}">
+              <i class="fas fa-users"></i>
+              <span href="{% url 'personnel' %}">Personnel</span>
+            </a>
+            </li>
+            <li><a href="{% url 'login' %}" class="logout">
+              <i class="fas fa-sign-out-alt"></i>
+              <span href="{% url 'login' %}">Logout</span>
+            </a>
+            </li>
+          </ul>
         </div>
-        <div class="sidebar_elmt">
-            <a href="#">Chambre</a>
-        </div>
-        <div class="sidebar_elmt">
-            <a href="{% url 'personnel' %}">personnel</a>
-        </div>
-        <div style="text-align: right; margin-top: 140%; ">
-            <form action="{% url 'logout' %}" method="post">
-                {% csrf_token %}
-                <button type="submit" style="background-color: #f44336; color: white; padding: 10px 20px; border: none;cursor: pointer; font-size: 16px;">Déconnexion</button>
-            </form>
-        </div>
-    </div>
-    
+      </nav>
 
+      <section class="main">
+        <div class="main-top">
+          <p>Smart Hospital</p>
+        </div>
+        <div class="job_card">
+          <div class="job_details">
+              
     <div class="content">
+        <a href="#" id="ajouter-chambre-btn"
+            style="background-color: #a2aaf1; color: white;margin-left:600px; padding: 10px; text-align: center; text-decoration: none;">Ajouter
+            chambre</a>
+            <br><br><br>
+        <!-- Tableau des chambres existantes -->
         <h1>Informations sur les chambres</h1>
         <div style="text-align: center; width: 100%;">
             {% if message_erreur %}
@@ -123,7 +145,9 @@
             {% if message_success %}
             <p style="color: green;">{{ message_success }}</p>
             {% endif %}
-            <table id="chambres-table" style="margin: 0 auto; border-collapse: collapse; width: 80%; border: 1px solid #ddd; border-radius: 5px;">
+
+            <table id="chambres-table"
+                style="margin: 0 auto; border-collapse: collapse; width: 80%; border: 1px solid #ddd; border-radius: 5px;">
                 <thead>
                     <tr style="background-color: #f2f2f2;">
                         <th style="padding: 12px; border-right: 1px solid #ddd; text-align: left;">Numéro</th>
@@ -146,8 +170,37 @@
                 </tbody>
             </table>
         </div>
-    </div>
 
+        <!-- Fenêtre modale -->
+        <div id="ajouter-chambre-modal" class="modal">
+            <div class="modal-content" style="background-color: #fefefe; padding: 20px; border-radius: 10px;">
+                <span class="close"
+                    style="color: #aaa; float: right; font-size: 28px; font-weight: bold;">&times;</span>
+                <h2 style="text-align: center; margin-bottom: 20px; color: #333;">Ajouter une chambre</h2>
+                <form id="ajouter-chambre-form" method="post" action="{% url 'ajouter_chambre' %}"
+                    style="text-align: center; ">
+                    {% csrf_token %}
+                    <div style="margin-bottom: 20px;">
+                        <label for="numero" style="font-weight: bold; color: #555;">Numéro:</label><br>
+                        <input type="number" id="numero" name="numero" required
+                            style="width: 70%; padding: 10px; margin-top: 5px; border: 1px solid #ccc; border-radius: 5px;">
+                    </div>
+                    <div style="margin-bottom: 20px;">
+                        <label for="etage" style="font-weight: bold; color: #555;">Étage:</label><br>
+                        <input type="number" id="etage" name="etage" required
+                            style="width: 70%; padding: 10px; margin-top: 5px; border: 1px solid #ccc; border-radius: 5px;">
+                    </div>
+                    <button type="submit"
+                        style="background-color: #4CAF50; color: white; padding: 12px 20px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px;">Ajouter</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+</section>
+</div>
 
     <script>
         // Récupérer la fenêtre modale

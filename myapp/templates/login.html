@@ -10,13 +10,20 @@
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
         .login-container {
-            max-width: 400px;
+            
             margin: auto;
             padding: 30px;
             border: 1px solid #ccc;
             border-radius: 10px;
             box-shadow: 0px 0px 10px 0px #000;
-            margin-top: 50px;
+
+            display: flex;
+            flex-direction: column;
+            margin-top: 100px;
+            width: 500px;
+            background: #fff;
+            padding-bottom: 30px;
+        
         }
         .messages {
             list-style-type: none;
@@ -25,12 +32,121 @@
         .messages li {
             margin-bottom: 10px;
         }
+        .container{
+          
+        }
+        
+        .header{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 9px;
+            width: 100%;
+            margin-top: 30px;
+          
+        
+        }
+        
+        .text{
+        
+        color: #3c009d;
+        font-size: 48px;
+        font-weight: 700;
+        }
+        
+        .underline{
+            width: 120px;
+            height: 6px;
+            background: #3c009d;
+            border-radius: 9px;
+        
+        }
+        
+        .inputs{
+            margin-top: 55px;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+        
+        .input{
+            display: flex;
+            align-items: center;
+            margin: auto;
+            width: 400px;
+            height: 60px;
+            background: #eaeaea;
+            border-radius: 6px;
+        
+        }
+        
+        .input img{
+            margin: 0px 30px;
+        }
+        .input input{
+            height: 50px;
+            width: 400px;
+            background: transparent;
+            border: none;
+            outline: none;
+            color: #797979;
+            font-size: 19px;
+        
+        }
+        
+        .forgot-password{
+            padding-left: 62px;
+            margin-top: 27px;
+            color: #797979;
+            font-size: 18px;
+        }
+        
+        .forgot-password span{
+            color: #4c00b4;
+            cursor: pointer;
+        
+        }
+        
+        .submit-container{
+            display: flex;
+            gap: 30px;
+            margin: 30px auto;
+        
+        }
+        
+        .submit{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 220px;
+            height: 50px;
+            color: #fff;
+            background: #4c00b4;
+            border-radius: 50px;
+            font-size: 19px;
+            font-weight: 700;
+            cursor: pointer;
+        
+        }
+        
+        body{
+            height: 100vh;
+            }
+        
+        .nav-logo-container{
+            margin-top: 20px;
+        }
+        
     </style>
 </head>
 <body>
     <div class="container">
         <div class="login-container">
-            <h2 class="text-center">Login</h2>
+            <div class="header">
+            <h2 class="text-center">Se connecter </h2>
+            <div class="underline"></div>
+        </div>
+        
             {% if messages %}
                 <ul class="messages">
                     {% for message in messages %}
@@ -38,16 +154,21 @@
                     {% endfor %}
                 </ul>
             {% endif %}
-            <form method="post">
+            <form class="inputs" method="post">
                 {% csrf_token %}
                 {% load widget_tweaks %}
                 <div class="form-group">
-                    {{ form.username|add_class:"form-control" }}
+                    
+                    {{ form.username|add_class:"input" }}
                 </div>
                 <div class="form-group">
-                    {{ form.password|add_class:"form-control" }}
+                    {{ form.password|add_class:"input" }}
                 </div>
-                <button type="submit" class="btn btn-primary btn-block">Login</button>
+                <div class="submit-container">
+                    <button type="submit" class="submit">Entrer</button>
+                    
+                </div>
+               
             </form>
         </div>
     </div>

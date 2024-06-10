@@ -1,0 +1,73 @@
+<span style="font-family: verdana, geneva, sans-serif;"><!DOCTYPE html>
+    <html lang="en">
+    <head>
+      <meta charset="UTF-8" />
+      <title>Travel Website | By Code Info</title>
+      <link rel="stylesheet" href="style.css" />
+      <!-- Font Awesome Cdn Link -->
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" />
+      {% load static %}
+ <link rel="stylesheet" href="{% static 'welcome.css' %}">
+    </head>
+    <body>
+      <header>
+        <div class="container">
+          <div class="nav_bar">
+            <div class="logo">
+                <img src="{% static 'images/logo2.png' %}" alt="Description de l'image">
+            </div>
+    
+              <div class="menu_list">
+                <a class="btn1" href="{% url 'login' %}">Se connecter</a>
+                
+    
+              </div>
+          </div>
+        </div>
+      </header>
+    
+      <section class="home_section">
+        <div class="overlay">
+          <div class="container">
+            <div class="home"> 
+              <h1><span>Gérez vos </span> Patients <br>Optimisez <span>votre Pratique</span> <br> Médicale</h1>
+              <div class="home_buttons">
+                <button href="{% url 'login' %}" class="btn1">Se connecter</button>
+               
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    
+      <section class="services">
+        <div class="container">
+          <div class="title">  
+            <h1>Optimisez <span>Votre Pratique</span></h1>
+            <span class="slogan">Médicale</span>
+          </div>
+          <div class="services_boxes">
+            <div class="box">
+              <i class="fa-solid fa-hospital"></i>
+              <h4>Hopitale</h4>
+              <p>Chez Smart Hospital, nous comprenons l'importance d'une gestion efficace et fluide des patients. Notre application innovante est conçue pour aider les médecins à optimiser leur pratique médicale, en fournissant des outils intuitifs pour suivre les dossiers des patients, planifier les consultations et gérer les chambres. Avec Smart Hospital, vous pouvez vous concentrer sur ce qui compte vraiment : offrir des soins de qualité à vos patients.</p>
+            </div>
+    
+            <div class="box br">
+              <i class="fa-solid fa-notes-medical"></i>
+              <h4>Patients</h4>
+              <p>Smart Hospital offre une solution complète pour la gestion des patients. Grâce à notre interface conviviale, vous pouvez facilement enregistrer et accéder aux informations médicales des patients, suivre l'historique des consultations et des traitements, et planifier des rendez-vous en quelques clics. Notre système de gestion des patients garantit que vous disposez de toutes les informations nécessaires pour prendre des décisions éclairées et fournir des soins personnalisés.</p>
+            </div>
+    
+            <div class="box">
+              <i class="fa-solid fa-suitcase-medical"></i>
+              <h4>Chambres</h4>
+              <p>La gestion efficace des chambres est essentielle pour assurer un flux de travail fluide et une utilisation optimale des ressources hospitalières. Avec Smart Hospital, vous pouvez facilement assigner et gérer les chambres, suivre les disponibilités en temps réel et planifier les admissions et les sorties sans tracas. Notre application vous aide à maximiser l'utilisation des chambres, réduisant ainsi les temps d'attente et améliorant l'expérience globale des patients.</p>
+            </div>
+          </div>
+      </div>
+      </section>
+    
+    </body>
+    </html>
+    </span>

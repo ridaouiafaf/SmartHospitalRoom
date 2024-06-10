@@ -1,6 +1,5 @@
 from django.urls import path
 from .views import *
-# from .views import rfid_data
 
 urlpatterns = [
     path('', CustomLoginView.as_view(), name='login'),
@@ -13,6 +12,8 @@ urlpatterns = [
     path('ajouter/', ajouter_patient, name='ajouter_patient'),
     path('personnel/', personnel, name='personnel'),
     path('ajouter_personnel/', ajouter_personnel, name='add_personnel'),
-    path('api/rfid_data/', rfid_data, name='rfid_data'), #pour la liaison
+    path('test/', test, name='test'),
+    path('welcome/', welcome, name='welcome'),
+
     
 ]

@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Liste du Personnel</title>
     <style>
-
         body {
             font-family: Arial, sans-serif;
             margin: 0;
@@ -41,29 +40,22 @@
 
         .modal {
             display: none;
-            /* Cachée par défaut */
             position: fixed;
             z-index: 1;
-            /* Placez la fenêtre modale au-dessus de tout le reste */
             left: 0;
             top: 0;
             width: 100%;
-            /* Largeur et hauteur pleine page */
             height: 100%;
             overflow: auto;
-            /* Permet de faire défiler la fenêtre modale si nécessaire */
             background-color: rgba(0, 0, 0, 0.4);
         }
 
-        /* Style pour le contenu de la fenêtre modale */
         .modal-content {
             background-color: #fefefe;
             margin: 5% auto;
-            /* Centrez verticalement */
             padding: 20px;
             border: 1px solid #888;
             width: 50%;
-            /* Largeur de la fenêtre modale */
         }
 
         .close {
@@ -100,8 +92,7 @@
         <div style="text-align: right; margin-top: 140%;">
             <form action="{% url 'logout' %}" method="post">
                 {% csrf_token %}
-                <button type="submit"
-                    style="background-color: #f44336; color: white; padding: 10px 20px; border: none; cursor: pointer; font-size: 16px;">Déconnexion</button>
+                <button type="submit" style="background-color: #f44336; color: white; padding: 10px 20px; border: none; cursor: pointer; font-size: 16px;">Déconnexion</button>
             </form>
         </div>
     </div>
@@ -123,17 +114,17 @@
             <tbody>
                 {% for personnel in personnels %}
                 <tr>                    
-                    <td style="padding: 12px; border: 1px solid #ddd;">{{ personnel.id_personne }}</td>
+                    <td style="padding: 12px; border: 1px solid #ddd;">{{ personnel.ci }}</td>
                     <td style="padding: 12px; border: 1px solid #ddd;">{{ personnel.nom }}</td>
                     <td style="padding: 12px; border: 1px solid #ddd;">{{ personnel.prenom }}</td>
                     <td style="padding: 12px; border: 1px solid #ddd;">{% if personnel.est_medecin %}Médecin{% else %}Infirmier{% endif %}</td>
                     <td style="padding: 12px; border: 1px solid #ddd;">
-                        {%if personnel.pointage_set.all%}
-                        {% for pointage in personnel.pointage_set.all %}
-                        {{ pointage.date_pointage }}<br>
-                        {% endfor %}
-                        {%else%}
-                        Aucun pointage
+                        {% if personnel.pointage_set.exists %}
+                            {% for pointage in personnel.pointage_set.all %}
+                                {{ pointage.date_pointage }}<br>
+                            {% endfor %}
+                        {% else %}
+                            Aucun pointage
                         {% endif %}
                     </td>
                 </tr>
@@ -155,8 +146,8 @@
                 <input type="text" id="prenom" name="prenom"><br>
                 <label for="est_medecin">Est Médecin:</label><br>
                 <input type="checkbox" id="est_medecin" name="est_medecin"><br>
-                <label for="fonctionnalite">Fonctionnalité:</label><br>
-                <input type="text" id="fonctionnalite" name="fonctionnalite"><br><br>
+                <label for="ci">Identifiant de carte d'accès:</label><br>
+                <input type="text" id="ci" name="ci"><br><br>
                 <button type="submit">Ajouter</button>
             </form>
         </div>
@@ -181,11 +172,8 @@
                 }
             }
         });
-        </script>
-        
+    </script>
 </body>
-
-
 </html>
 
 

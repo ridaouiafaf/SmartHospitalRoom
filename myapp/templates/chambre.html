@@ -115,11 +115,6 @@
     
 
     <div class="content">
-        <a href="#" id="ajouter-chambre-btn"
-            style="background-color: green; color: white; padding: 10px; text-align: center; text-decoration: none;">Ajouter
-            chambre</a>
-            <br><br><br>
-        <!-- Tableau des chambres existantes -->
         <h1>Informations sur les chambres</h1>
         <div style="text-align: center; width: 100%;">
             {% if message_erreur %}
@@ -128,9 +123,7 @@
             {% if message_success %}
             <p style="color: green;">{{ message_success }}</p>
             {% endif %}
-
-            <table id="chambres-table"
-                style="margin: 0 auto; border-collapse: collapse; width: 80%; border: 1px solid #ddd; border-radius: 5px;">
+            <table id="chambres-table" style="margin: 0 auto; border-collapse: collapse; width: 80%; border: 1px solid #ddd; border-radius: 5px;">
                 <thead>
                     <tr style="background-color: #f2f2f2;">
                         <th style="padding: 12px; border-right: 1px solid #ddd; text-align: left;">Numéro</th>
@@ -153,32 +146,8 @@
                 </tbody>
             </table>
         </div>
-
-        <!-- Fenêtre modale -->
-        <div id="ajouter-chambre-modal" class="modal">
-            <div class="modal-content" style="background-color: #fefefe; padding: 20px; border-radius: 10px;">
-                <span class="close"
-                    style="color: #aaa; float: right; font-size: 28px; font-weight: bold;">&times;</span>
-                <h2 style="text-align: center; margin-bottom: 20px; color: #333;">Ajouter une chambre</h2>
-                <form id="ajouter-chambre-form" method="post" action="{% url 'ajouter_chambre' %}"
-                    style="text-align: center; ">
-                    {% csrf_token %}
-                    <div style="margin-bottom: 20px;">
-                        <label for="numero" style="font-weight: bold; color: #555;">Numéro:</label><br>
-                        <input type="number" id="numero" name="numero" required
-                            style="width: 70%; padding: 10px; margin-top: 5px; border: 1px solid #ccc; border-radius: 5px;">
-                    </div>
-                    <div style="margin-bottom: 20px;">
-                        <label for="etage" style="font-weight: bold; color: #555;">Étage:</label><br>
-                        <input type="number" id="etage" name="etage" required
-                            style="width: 70%; padding: 10px; margin-top: 5px; border: 1px solid #ccc; border-radius: 5px;">
-                    </div>
-                    <button type="submit"
-                        style="background-color: #4CAF50; color: white; padding: 12px 20px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px;">Ajouter</button>
-                </form>
-            </div>
-        </div>
     </div>
+
 
     <script>
         // Récupérer la fenêtre modale

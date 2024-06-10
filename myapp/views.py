@@ -8,6 +8,11 @@ from .forms import PatientForm
 from django.http import JsonResponse
 from django.contrib.sessions.models import Session
 from datetime import datetime
+# liaison
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+import json
+
 
 def ajouter_chambre(request):
     user_id = request.session.get('user_id')
@@ -50,11 +55,26 @@ def index(request):
     request.session['user_id'] = user_id
     return render(request, 'index.html')
 
+@csrf_exempt
 def chambre(request):
-    user_id = request.session.get('user_id')
-    chambres = Chambre.objects.all()
-    return render(request, 'chambre.html', {'chambres': chambres, 'user_id': user_id})
+    if request.method == 'POST':
+        temperature = request.POST.get('temperature')
+        humidite = request.POST.get('humidite')
+        qualite_air = request.POST.get('qualite_air')
 
+        try:
+            chambre = Chambre.objects.get(numero=1, etage=1)
+            chambre.temperature = temperature
+            chambre.humidite = humidite
+            chambre.qualite_air = qualite_air
+            chambre.save()
+            return JsonResponse({'status': 'success'})
+        except Chambre.DoesNotExist:
+            return JsonResponse({'status': 'error', 'message': 'Chambre non trouvée'})
+
+    else:
+        chambres = Chambre.objects.all()
+        return render(request, 'chambre.html', {'chambres': chambres})
 
 def ajouter_patient(request):
     user_id = request.session.get('user_id')
@@ -103,29 +123,49 @@ def patient(request):
     chambres = Chambre.objects.all()
     return render(request, 'patient.html', {'patients': patients, 'chambres':chambres , 'user_id': user_id})
 
-
+@csrf_exempt
 def personnel(request):
     if request.method == 'POST':
         personnel_id = request.POST.get('personnel_id')
-        personnel = Personnel.objects.get(pk=personnel_id)
-        personnel.date_pointage = timezone.now()
-        personnel.save()
-        return redirect('personnel')
+        
+        try:
+            personnel = Personnel.objects.get(pk=personnel_id)
+            pointage = Pointage(personnel=personnel)
+            pointage.save()
+            return JsonResponse({'status': 'success'})
+        except Personnel.DoesNotExist:
+            return JsonResponse({'status': 'error', 'message': 'Personnel non trouvé'})
     else:
         personnels = Personnel.objects.all()
-        return render(request, 'personnel.html', {'personnels': personnels})
-    
+        return render(request, 'personnel.html', {'personnels': personnels})    
 
 def ajouter_personnel(request):
     if request.method == 'POST':
         nom = request.POST.get('nom')
         prenom = request.POST.get('prenom')
         est_medecin = 'est_medecin' in request.POST
-        fonctionnalite = request.POST.get('fonctionnalite')
-        personnel = Personnel(nom=nom, prenom=prenom, est_medecin=est_medecin, fonctionnalite=fonctionnalite)
+        ci = request.POST.get('ci')
+        personnel = Personnel(ci=ci, nom=nom, prenom=prenom, est_medecin=est_medecin)
         personnel.save()
         return redirect('personnel')
     else:
         personnels = Personnel.objects.all()
         return render(request, 'personnel.html', {'personnels': personnels})
 
+#  liaison
+@csrf_exempt
+def rfid_data(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            # Extract RFID and sensor data
+            rfid = data.get('rfid')
+            temperature = data.get('temperature')
+            humidity = data.get('humidity')
+            gas = data.get('gas')
+            # Process and save the data as needed
+            # Example: RFIDData.objects.create(rfid=rfid, temperature=temperature, humidity=humidity, gas=gas)
+            return JsonResponse({'status': 'success', 'message': 'Data received'})
+        except json.JSONDecodeError:
+            return JsonResponse({'status': 'error', 'message': 'Invalid JSON'}, status=400)
+    return JsonResponse({'status': 'error', 'message': 'Invalid request method'}, status=405)

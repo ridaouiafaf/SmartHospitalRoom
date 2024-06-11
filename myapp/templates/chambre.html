@@ -6,10 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Informations sur les chambres</title>
     <!-- Font Awesome Cdn Link -->
- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
 
- {% load static %}
- <link rel="stylesheet" href="{% static 'chambre.css' %}">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'chambre.css' %}">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -83,8 +83,9 @@
             text-decoration: none;
             cursor: pointer;
         }
-        .sidebar_elmt{
-            border-bottom:#000 solid 2px ;
+
+        .sidebar_elmt {
+            border-bottom: #000 solid 2px;
         }
     </style>
 </head>
@@ -92,115 +93,118 @@
 <body>
 
     <div class="container">
-
-    <nav>
-        <div class="navbar">
-          <div class="logo">
-              <img src="{% static 'images/logo2.png' %}" alt="Description de l'image">
-          </div>
-          <ul>        
-            
-            <li><a href="{% url 'patient' %}">
-              <i class="fas fa-hospital-user"></i>
-              <span class="nav-item" >Patient</span>
-            </a>
-            </li>
-            <li><a href="#">
-              <i class="fas fa-bed"></i>
-              <span class="nav-item">Chambres</span>
-            </a>
-            </li>
-            <li><a href="{% url 'personnel' %}">
-              <i class="fas fa-users"></i>
-              <span href="{% url 'personnel' %}">Personnel</span>
-            </a>
-            </li>
-            <li><a href="{% url 'login' %}" class="logout">
-              <i class="fas fa-sign-out-alt"></i>
-              <span href="{% url 'login' %}">Logout</span>
-            </a>
-            </li>
-          </ul>
-        </div>
-      </nav>
-
-      <section class="main">
-        <div class="main-top">
-          <p>Smart Hospital</p>
-        </div>
-        <div class="job_card">
-          <div class="job_details">
-              
-    <div class="content">
-        <a href="#" id="ajouter-chambre-btn"
-            style="background-color: #a2aaf1; color: white;margin-left:600px; padding: 10px; text-align: center; text-decoration: none;">Ajouter
-            chambre</a>
-            <br><br><br>
-        <!-- Tableau des chambres existantes -->
-        <h1>Informations sur les chambres</h1>
-        <div style="text-align: center; width: 100%;">
-            {% if message_erreur %}
-            <p style="color: red;">{{ message_erreur }}</p>
-            {% endif %}
-            {% if message_success %}
-            <p style="color: green;">{{ message_success }}</p>
-            {% endif %}
-
-            <table id="chambres-table"
-                style="margin: 0 auto; border-collapse: collapse; width: 80%; border: 1px solid #ddd; border-radius: 5px;">
-                <thead>
-                    <tr style="background-color: #f2f2f2;">
-                        <th style="padding: 12px; border-right: 1px solid #ddd; text-align: left;">Numéro</th>
-                        <th style="padding: 12px; border-right: 1px solid #ddd; text-align: left;">Étage</th>
-                        <th style="padding: 12px; border-right: 1px solid #ddd; text-align: left;">Température</th>
-                        <th style="padding: 12px; border-right: 1px solid #ddd; text-align: left;">Humidité</th>
-                        <th style="padding: 12px; text-align: left;">Qualité de l'air</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for chambre in chambres %}
-                    <tr style="border-bottom: 1px solid #ddd;">
-                        <td style="padding: 12px; border-right: 1px solid #ddd;">{{ chambre.numero }}</td>
-                        <td style="padding: 12px; border-right: 1px solid #ddd;">{{ chambre.etage }}</td>
-                        <td style="padding: 12px; border-right: 1px solid #ddd;">{{ chambre.temperature }}</td>
-                        <td style="padding: 12px; border-right: 1px solid #ddd;">{{ chambre.humidite }}</td>
-                        <td style="padding: 12px;">{{ chambre.qualite_air }}</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-
-        <!-- Fenêtre modale -->
-        <div id="ajouter-chambre-modal" class="modal">
-            <div class="modal-content" style="background-color: #fefefe; padding: 20px; border-radius: 10px;">
-                <span class="close"
-                    style="color: #aaa; float: right; font-size: 28px; font-weight: bold;">&times;</span>
-                <h2 style="text-align: center; margin-bottom: 20px; color: #333;">Ajouter une chambre</h2>
-                <form id="ajouter-chambre-form" method="post" action="{% url 'ajouter_chambre' %}"
-                    style="text-align: center; ">
-                    {% csrf_token %}
-                    <div style="margin-bottom: 20px;">
-                        <label for="numero" style="font-weight: bold; color: #555;">Numéro:</label><br>
-                        <input type="number" id="numero" name="numero" required
-                            style="width: 70%; padding: 10px; margin-top: 5px; border: 1px solid #ccc; border-radius: 5px;">
-                    </div>
-                    <div style="margin-bottom: 20px;">
-                        <label for="etage" style="font-weight: bold; color: #555;">Étage:</label><br>
-                        <input type="number" id="etage" name="etage" required
-                            style="width: 70%; padding: 10px; margin-top: 5px; border: 1px solid #ccc; border-radius: 5px;">
-                    </div>
-                    <button type="submit"
-                        style="background-color: #4CAF50; color: white; padding: 12px 20px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px;">Ajouter</button>
-                </form>
+        <nav>
+            <div class="navbar">
+                <div class="logo">
+                    <img src="{% static 'images/logo2.png' %}" alt="Description de l'image">
+                </div>
+                <ul>
+                    <li><a href="{% url 'patient' %}">
+                            <i class="fas fa-hospital-user"></i>
+                            <span class="nav-item">Patient</span>
+                        </a>
+                    </li>
+                    <li><a href="#">
+                            <i class="fas fa-bed"></i>
+                            <span class="nav-item">Chambres</span>
+                        </a>
+                    </li>
+                    <li><a href="{% url 'personnel' %}">
+                            <i class="fas fa-users"></i>
+                            <span>Personnel</span>
+                        </a>
+                    </li>
+                    <li><a href="{% url 'login' %}" class="logout">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span>Logout</span>
+                        </a>
+                    </li>
+                </ul>
             </div>
-        </div>
+        </nav>
+
+        <section class="main">
+            <div class="main-top">
+                <p>Smart Hospital</p>
+            </div>
+            <div class="job_card">
+                <div class="job_details">
+
+                    <div class="content">
+                        <a href="#" id="ajouter-chambre-btn"
+                            style="background-color: #a2aaf1; color: white;margin-left:600px; padding: 10px; text-align: center; text-decoration: none;">Ajouter
+                            chambre</a>
+                        <br><br><br>
+                        <!-- Tableau des chambres existantes -->
+                        <h1>Informations sur les chambres</h1>
+                        <div style="text-align: center; width: 100%;">
+                            {% if message_erreur %}
+                            <p style="color: red;">{{ message_erreur }}</p>
+                            {% endif %}
+                            {% if message_success %}
+                            <p style="color: green;">{{ message_success }}</p>
+                            {% endif %}
+
+                            <table id="chambres-table"
+                                style="margin: 0 auto; border-collapse: collapse; width: 80%; border: 1px solid #ddd; border-radius: 5px;">
+                                <thead>
+                                    <tr style="background-color: #f2f2f2;">
+                                        <th style="padding: 12px; border-right: 1px solid #ddd; text-align: left;">Numéro
+                                        </th>
+                                        <th style="padding: 12px; border-right: 1px solid #ddd; text-align: left;">Étage
+                                        </th>
+                                        <th style="padding: 12px; border-right: 1px solid #ddd; text-align: left;">
+                                            Température</th>
+                                        <th style="padding: 12px; border-right: 1px solid #ddd; text-align: left;">
+                                            Humidité</th>
+                                        <th style="padding: 12px; text-align: left;">Qualité de l'air</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for chambre in chambres %}
+                                    <tr style="border-bottom: 1px solid #ddd;">
+                                        <td style="padding: 12px; border-right: 1px solid #ddd;">{{ chambre.numero }}
+                                        </td>
+                                        <td style="padding: 12px; border-right: 1px solid #ddd;">{{ chambre.etage }}
+                                        </td>
+                                        <td style="padding: 12px; border-right: 1px solid #ddd;">{{ chambre.temperature}}</td>
+                                        <td style="padding: 12px; border-right: 1px solid #ddd;">{{ chambre.humidite }}
+                                        </td>
+                                        <td style="padding: 12px;">{{ chambre.qualite_air }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Fenêtre modale -->
+                        <div id="ajouter-chambre-modal" class="modal">
+                            <div class="modal-content" style="background-color: #fefefe; padding: 20px; border-radius: 10px;">
+                                <span class="close" style="color: #aaa; float: right; font-size: 28px; font-weight: bold;">&times;</span>
+                                <h2 style="text-align: center; margin-bottom: 20px; color: #333;">Ajouter une chambre</h2>
+                                <form id="ajouter-chambre-form" method="post" action="{% url 'ajouter_chambre' %}" style="text-align: center;">
+                                    {% csrf_token %}
+                                    <div style="margin-bottom: 20px;">
+                                        <label for="numero" style="font-weight: bold; color: #555;">Numéro:</label><br>
+                                        <input type="number" id="numero" name="numero" required
+                                            style="width: 70%; padding: 10px; margin-top: 5px; border: 1px solid #ccc; border-radius: 5px;">
+                                    </div>
+                                    <div style="margin-bottom: 20px;">
+                                        <label for="etage" style="font-weight: bold; color: #555;">Étage:</label><br>
+                                        <input type="number" id="etage" name="etage" required
+                                            style="width: 70%; padding: 10px; margin-top: 5px; border: 1px solid #ccc; border-radius: 5px;">
+                                    </div>
+                                    <button type="submit"
+                                        style="background-color: #4CAF50; color: white; padding: 12px 20px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px;">Ajouter</button>
+                                </form>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
     </div>
-</div>
-</div>
-</div>
-</section>
-</div>
 
     <script>
         // Récupérer la fenêtre modale
@@ -222,32 +226,13 @@
             modal.style.display = "none";
         }
 
-        // Lorsque l'utilisateur clique en dehors de la fenêtre modale, fermez-la
+        // Lorsque l'utilisateur clique n'importe où en dehors de la fenêtre modale, fermez-la
         window.onclick = function (event) {
             if (event.target == modal) {
                 modal.style.display = "none";
             }
         }
     </script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- Inclusion de jQuery -->
-    <script>
-        function syncChambres() {
-            $.ajax({
-                url: '/chambres/json/',
-                method: 'GET',
-                dataType: 'json',
-                success: function (data) {
-                    $('#chambres-table tbody').empty();
-                    data.forEach(function (chambre) {
-                        $('#chambres-table tbody').append('<tr style="border-bottom: 1px solid #ddd;"><td style="padding: 12px; border-right: 1px solid #ddd;">' + chambre.numero + '</td><td>' + chambre.etage + '</td><td>' + chambre.temperature + '</td><td>' + chambre.humidite + '</td><td>' + chambre.qualite_air + '</td></tr>');
-                    });
-                },
-                error: function (xhr, status, error) {
-                    console.error('Erreur lors de la récupération des données des chambres:', error);
-                }
-            });
-        }
-        setInterval(syncChambres, 10000);
-    </script>
 </body>
+
 </html>

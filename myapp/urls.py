@@ -12,8 +12,6 @@ urlpatterns = [
     path('ajouter/', ajouter_patient, name='ajouter_patient'),
     path('personnel/', personnel, name='personnel'),
     path('ajouter_personnel/', ajouter_personnel, name='add_personnel'),
-    path('test/', test, name='test'),
-    path('welcome/', welcome, name='welcome'),
-
-    
+    # path('test/', test, name='test'),
+    # path('welcome/', welcome, name='welcome'),    
 ]

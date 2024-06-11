@@ -6,12 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Liste du Personnel</title>
     <!-- Font Awesome Cdn Link -->
- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
 
     {% load static %}
     <link rel="stylesheet" href="{% static 'personnel.css' %}">
     <style>
-
         body {
             font-family: Arial, sans-serif;
             margin: 0;
@@ -46,29 +45,22 @@
 
         .modal {
             display: none;
-            /* Cachée par défaut */
             position: fixed;
             z-index: 1;
-            /* Placez la fenêtre modale au-dessus de tout le reste */
             left: 0;
             top: 0;
             width: 100%;
-            /* Largeur et hauteur pleine page */
             height: 100%;
             overflow: auto;
-            /* Permet de faire défiler la fenêtre modale si nécessaire */
             background-color: rgba(0, 0, 0, 0.4);
         }
 
-        /* Style pour le contenu de la fenêtre modale */
         .modal-content {
             background-color: #fefefe;
             margin: 5% auto;
-            /* Centrez verticalement */
             padding: 20px;
             border: 1px solid #888;
             width: 50%;
-            /* Largeur de la fenêtre modale */
         }
 
         .close {
@@ -91,153 +83,128 @@
     </style>
 </head>
 
-
-    
-
-
-
-    <body>
-        <div class="container">
-    
+<body>
+    <div class="container">
         <nav>
             <div class="navbar">
-              <div class="logo">
-                  <img src="{% static 'images/logo2.png' %}" alt="Description de l'image">
-              </div>
-              <ul>        
-                
-                <li><a href="{% url 'patient' %}">
-                  <i class="fas fa-hospital-user"></i>
-                  <span class="nav-item" >Patient</span>
-                </a>
-                </li>
-                <li><a href="{% url 'chambre' %}">
-                  <i class="fas fa-bed"></i>
-                  <span class="nav-item">Chambres</span>
-                </a>
-                </li>
-                <li><a href="#">
-                  <i class="fas fa-users"></i>
-                  <span href="{% url 'personnel' %}">Personnel</span>
-                </a>
-                </li>
-                <li><a href="{% url 'login' %}" class="logout">
-                  <i class="fas fa-sign-out-alt"></i>
-                  <span href="{% url 'login' %}">Logout</span>
-                </a>
-                </li>
-              </ul>
+                <div class="logo">
+                    <img src="{% static 'images/logo2.png' %}" alt="Description de l'image">
+                </div>
+                <ul>
+                    <li><a href="{% url 'patient' %}">
+                            <i class="fas fa-hospital-user"></i>
+                            <span class="nav-item">Patient</span>
+                        </a>
+                    </li>
+                    <li><a href="{% url 'chambre' %}">
+                            <i class="fas fa-bed"></i>
+                            <span class="nav-item">Chambres</span>
+                        </a>
+                    </li>
+                    <li><a href="#">
+                            <i class="fas fa-users"></i>
+                            <span href="{% url 'personnel' %}">Personnel</span>
+                        </a>
+                    </li>
+                    <li><a href="{% url 'login' %}" class="logout">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span href="{% url 'login' %}">Logout</span>
+                        </a>
+                    </li>
+                </ul>
             </div>
-          </nav>
-    
-          <section class="main">
+        </nav>
+
+        <section class="main">
             <div class="main-top">
-              <p>Smart Hospital</p>
+                <p>Smart Hospital</p>
             </div>
             <div class="job_card">
-              <div class="job_details">
-                  
-                <div class="content">
-                    
-                    <button id="addPersonnelBtn" style="background-color: #a2aaf1; color: white;margin-left:600px; padding: 10px; text-align: center; text-decoration: none;">Ajouter Personnel</button>
-                    <!-- Tableau des personnels -->
-                    <h1>Liste du Personnel</h1>
-                   
-                    <table style="width: 100%; border-collapse: collapse;">
-                        <thead>
-                            <tr style="background-color: #f2f2f2;">                    
-                                <th style="padding: 12px; border: 1px solid #ddd;">id</th>
-                                <th style="padding: 12px; border: 1px solid #ddd;">Nom</th>
-                                <th style="padding: 12px; border: 1px solid #ddd;">Prénom</th>
-                                <th style="padding: 12px; border: 1px solid #ddd;">Fonction</th>
-                                <th style="padding: 12px; border: 1px solid #ddd;">Date Pointage</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for personnel in personnels %}
-                            <tr>                    
-                                <td style="padding: 12px; border: 1px solid #ddd;">{{ personnel.id_personne }}</td>
-                                <td style="padding: 12px; border: 1px solid #ddd;">{{ personnel.nom }}</td>
-                                <td style="padding: 12px; border: 1px solid #ddd;">{{ personnel.prenom }}</td>
-                                <td style="padding: 12px; border: 1px solid #ddd;">{% if personnel.est_medecin %}Médecin{% else %}Infirmier{% endif %}</td>
-                                <td style="padding: 12px; border: 1px solid #ddd;">
-                                    {%if personnel.pointage_set.all%}
-                                    {% for pointage in personnel.pointage_set.all %}
-                                    {{ pointage.date_pointage }}<br>
-                                    {% endfor %}
-                                    {%else%}
-                                    Aucun pointage
-                                    {% endif %}
-                                </td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-            
-                <!-- Fenêtre modale -->
-                <div id="myModal" class="modal">
-                    <div class="modal-content">
-                        <span class="close">&times;</span>
-                        <h2>Ajouter Personnel</h2>
-                        <form id="addPersonnelForm" method="post" action="{% url 'add_personnel' %}">
-                            {% csrf_token %}
-                            <label for="nom">Nom:</label><br>
-                            <input type="text" id="nom" name="nom"><br>
-                            <label for="prenom">Prénom:</label><br>
-                            <input type="text" id="prenom" name="prenom"><br>
-                            <label for="est_medecin">Est Médecin:</label><br>
-                            <input type="checkbox" id="est_medecin" name="est_medecin"><br>
-                            <label for="fonctionnalite">Fonctionnalité:</label><br>
-                            <input type="text" id="fonctionnalite" name="fonctionnalite"><br><br>
-                            <button type="submit">Ajouter</button>
-                        </form>
+                <div class="job_details">
+                    <div class="content">
+                        <button id="addPersonnelBtn" style="background-color: #a2aaf1; color: white;margin-left:600px; padding: 10px; text-align: center; text-decoration: none;">Ajouter Personnel</button>
+                        <!-- Tableau des personnels -->
+                        <h1>Liste du Personnel</h1>
+
+                        <table style="width: 100%; border-collapse: collapse;">
+                            <thead>
+                                <tr style="background-color: #f2f2f2;">
+                                    <th style="padding: 12px; border: 1px solid #ddd;">id</th>
+                                    <th style="padding: 12px; border: 1px solid #ddd;">Nom</th>
+                                    <th style="padding: 12px; border: 1px solid #ddd;">Prénom</th>
+                                    <th style="padding: 12px; border: 1px solid #ddd;">Fonction</th>
+                                    <th style="padding: 12px; border: 1px solid #ddd;">Date Pointage</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for personnel in personnels %}
+                                <tr>
+                                    <td style="padding: 12px; border: 1px solid #ddd;">{{ personnel.ci }}</td>
+                                    <td style="padding: 12px; border: 1px solid #ddd;">{{ personnel.nom }}</td>
+                                    <td style="padding: 12px; border: 1px solid #ddd;">{{ personnel.prenom }}</td>
+                                    <td style="padding: 12px; border: 1px solid #ddd;">{% if personnel.est_medecin %}Médecin{% else %}Infirmier{% endif %}</td>
+                                    <td style="padding: 12px; border: 1px solid #ddd;">
+                                        {% if personnel.pointage_set.exists %}
+                                        {% for pointage in personnel.pointage_set.all %}
+                                        {{ pointage.date_pointage }}<br>
+                                        {% endfor %}
+                                        {% else %}
+                                        Aucun pointage
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Fenêtre modale -->
+                    <div id="myModal" class="modal">
+                        <div class="modal-content">
+                            <span class="close">&times;</span>
+                            <h2>Ajouter Personnel</h2>
+                            <form id="addPersonnelForm" method="post" action="{% url 'add_personnel' %}">
+                                {% csrf_token %}
+                                <label for="nom">Nom:</label><br>
+                                <input type="text" id="nom" name="nom"><br>
+                                <label for="prenom">Prénom:</label><br>
+                                <input type="text" id="prenom" name="prenom"><br>
+                                <label for="est_medecin">Est Médecin:</label><br>
+                                <input type="checkbox" id="est_medecin" name="est_medecin"><br>
+                                <label for="ci">Identifiant de carte d'accès:</label><br>
+                                <input type="text" id="ci" name="ci"><br><br>
+                                <button type="submit">Ajouter</button>
+                            </form>
+                        </div>
                     </div>
                 </div>
-                
-    </div>
-    </div>
+            </div>
     </div>
     </section>
     </div>
-
-
-
-
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             var modal = document.getElementById("myModal");
             var btn = document.getElementById("addPersonnelBtn");
             var span = document.getElementsByClassName("close")[0];
-        
+
             btn.onclick = function() {
                 modal.style.display = "block";
             }
-        
+
             span.onclick = function() {
                 modal.style.display = "none";
             }
-        
+
             window.onclick = function(event) {
                 if (event.target == modal) {
                     modal.style.display = "none";
                 }
             }
         });
-        </script>
-        
+    </script>
+
 </body>
 
-
 </html>
-
-
-
-
-
-
-
-
-
-    
